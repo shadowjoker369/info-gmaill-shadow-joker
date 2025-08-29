@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gmail Info Viewer</title>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f1115;
+      color: #e8ecf3;
+      text-align: center;
+      padding: 40px;
+    }
+    .card {
+      background: #161a22;
+      border-radius: 15px;
+      padding: 20px;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+    img {
+      border-radius: 50%;
+      margin: 10px;
+    }
+    button {
+      background: #2bd576;
+      color: #000;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+    button:hover {
+      background: #24b765;
+    }
+  </style>
+</head>
+<body>
+  <h1>📧 Gmail Info Viewer</h1>
+  <div class="card">
+    <div id="user-info">Login with Gmail to see info</div>
+    <button id="login-btn">Login with Google</button>
+  </div>
+
+  <script>
+    const clientId = "YOUR_GOOGLE_CLIENT_ID"; // <-- এখানে তোমার Google OAuth Client ID বসাতে হবে
+
+    document.getElementById("login-btn").addEventListener("click", () => {
+      google.accounts.id.initialize({
+        client_id: clientId,
+        callback: handleCredentialResponse
+      });
+      google.accounts.id.prompt(); // Shows Google login
+    });
+
+    function handleCredentialResponse(response) {
+      const id_token = response.credential;
+      const payload = JSON.parse(atob(id_token.split(".")[1]));
+
+      document.getElementById("user-info").innerHTML = `
+        <h2>Welcome, ${payload.name}</h2>
+        <p><b>Email:</b> ${payload.email}</p>
+        <img src="${payload.picture}" width="100"/>
+      `;
+    }
+  </script>
+</body>
+</html>
