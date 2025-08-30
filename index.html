@@ -7,54 +7,81 @@
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #0f1115;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url('https://media.giphy.com/media/xT0Gqn9yuw8hnqDUI4/giphy.gif') no-repeat center center fixed;
+      background-size: cover;
       color: #e8ecf3;
       text-align: center;
       padding: 40px;
     }
-    .card {
-      background: #161a22;
-      border-radius: 15px;
-      padding: 20px;
-      max-width: 400px;
-      margin: auto;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    .logo {
+      width: 120px;
+      margin-bottom: 50px;
     }
-    img {
+    .card {
+      background: rgba(22, 26, 34, 0.9);
+      border-radius: 20px;
+      padding: 30px;
+      max-width: 450px;
+      margin: auto;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+      backdrop-filter: blur(6px);
+    }
+    img.profile {
       border-radius: 50%;
-      margin: 10px;
+      margin: 15px;
+      border: 3px solid #2bd576;
     }
     button {
-      background: #2bd576;
+      background: linear-gradient(90deg, #2bd576, #24b765);
       color: #000;
+      font-weight: bold;
       border: none;
-      padding: 12px 20px;
-      border-radius: 10px;
+      padding: 14px 25px;
+      border-radius: 12px;
       cursor: pointer;
-      margin-top: 15px;
+      margin-top: 20px;
+      transition: transform 0.2s ease;
     }
     button:hover {
-      background: #24b765;
+      transform: scale(1.05);
+    }
+    .instructions {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #ff000f;
+    }
+    .credit {
+      margin-top: 25px;
+      font-size: 13px;
+      color: #2bd576;
     }
   </style>
 </head>
 <body>
+  <!-- লোগো -->
+  <img src="https://iili.io/KFPfe19.md.jpg" alt="Logo" class="logo"/>
+  
   <h1>📧 Gmail Info Viewer</h1>
+  <p class="instructions">👉 এই টুল ব্যবহার করতে "Login with Google" এ ক্লিক করুন। <br> 
+  লগইন করলে আপনার Gmail ইনফরমেশন (নাম, ইমেইল, প্রোফাইল ছবি কী কী একাউন্ট খোলা) দেখাবে।</p>
+  
   <div class="card">
-    <div id="user-info">Login with Gmail to see info</div>
+    <div id="user-info">Login with Gmail to see your information</div>
     <button id="login-btn">Login with Google</button>
   </div>
 
+  <p class="credit">⚡ Powered by <b>SHADOW JOKER</b></p>
+
   <script>
-    const clientId = "YOUR_GOOGLE_CLIENT_ID"; // <-- এখানে তোমার Google OAuth Client ID বসাতে হবে
+    const clientId = "183541791037-sbh89d63o6pmqqnvd6lo497pir8mfkj3.apps.googleusercontent.com"; // <-- এখানে তোমার Google OAuth Client ID বসাতে হবে
 
     document.getElementById("login-btn").addEventListener("click", () => {
       google.accounts.id.initialize({
         client_id: clientId,
         callback: handleCredentialResponse
       });
-      google.accounts.id.prompt(); // Shows Google login
+      google.accounts.id.prompt(); // Shows Google login popup
     });
 
     function handleCredentialResponse(response) {
@@ -64,7 +91,7 @@
       document.getElementById("user-info").innerHTML = `
         <h2>Welcome, ${payload.name}</h2>
         <p><b>Email:</b> ${payload.email}</p>
-        <img src="${payload.picture}" width="100"/>
+        <img src="${payload.picture}" class="profile" width="120"/>
       `;
     }
   </script>
